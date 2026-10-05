@@ -223,6 +223,7 @@ static void draw_hud(void)
 
     {
         u32 ticks = MMIO32(G_PLAYTIME);
+        if (ticks) ticks--;        /* the game's own clocks format the count as it was before this frame's increment, match them so the time doesn't start 1 frame ahead */
         u32 secs  = ticks / 30;
         u32 ff = ticks % 30, ss = secs % 60;
         u32 mm = (secs / 60) % 60, hh = secs / 3600;

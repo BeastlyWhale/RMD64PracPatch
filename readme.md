@@ -20,6 +20,16 @@ Blue: Savestate combo recognized and in queue or process
 Orange: a savestate has just been taken
 Red: Savestate attempt took longer than 2 seconds for a quiet moment to execute and stopped, try again
 
+##Applying the Patch
+Dump a z64 big endian RMD64 rom that matches the following
+MD5: 0c74b44680276ffe808cfa6045329819
+SHA1: e807ed78db0b3440f76b445bf989a943bc05e0ad
+Size: 33,554,432 bytes
+
+Apply the BPS file from the releases section via your preferred BPS patcher
+Here is a link to an online patcher that you can access via a web browser;
+https://www.marcrobledo.com/RomPatcher.js/
+
 ##Building
 I used the following in WSL
 gcc-mips-linux-gnu 
