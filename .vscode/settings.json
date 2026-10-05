@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.S": "c",
+    "*.ld": "linkerscript"
+  },
+  "python.defaultInterpreterPath": "/usr/bin/python3"
+}

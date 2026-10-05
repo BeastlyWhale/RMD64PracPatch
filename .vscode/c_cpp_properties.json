@@ -1,0 +1,15 @@
+{
+  "configurations": [{
+    "name": "rmd64",
+    "compilerPath": "/usr/bin/mips-linux-gnu-gcc",
+    "compilerArgs": [
+      "-march=vr4300", "-mabi=32", "-G0",
+      "-ffreestanding", "-nostdlib", "-fno-builtin"
+    ],
+    "includePath": ["${workspaceFolder}/src"],
+    "defines": ["STAGE=4", "HUD_MINIMAL=1", "HUD_MODE=6", "POKE_CAP=0"],
+    "cStandard": "c99",
+    "intelliSenseMode": "linux-gcc-x64"
+  }],
+  "version": 4
+}
