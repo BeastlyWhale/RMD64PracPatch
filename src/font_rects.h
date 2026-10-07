@@ -2,7 +2,7 @@
 #ifndef RMD64_FONT_RECTS_H
 #define RMD64_FONT_RECTS_H
 
-#define GLYPH_COUNT 22
+#define GLYPH_COUNT 23
 #define GL_COLON  10
 #define GL_DOT    11
 #define GL_MINUS  12
@@ -14,12 +14,13 @@
 #define GL_R      18
 #define GL_A      19
 #define GL_C      20
-#define GL_M      21
+#define GL_T      21
+#define GL_H      22
 
 /* white rectangles: the ink, or one full cell for a box glyph */
-static const u8 kGlyphOfs[GLYPH_COUNT + 1] = {0, 1, 4, 5, 9, 12, 13, 14, 17, 18, 19, 21, 22, 23, 23, 28, 31, 36, 37, 42, 46, 47, 50};
+static const u8 kGlyphOfs[GLYPH_COUNT + 1] = {0, 1, 4, 5, 9, 12, 13, 14, 17, 18, 19, 21, 22, 23, 23, 28, 31, 36, 37, 42, 46, 47, 49, 52};
 
-static const u8 kGlyphRect[50][4] = {
+static const u8 kGlyphRect[52][4] = {
     {0, 0, 3, 5},
     {0, 1, 2, 1},
     {0, 4, 3, 1},
@@ -67,13 +68,15 @@ static const u8 kGlyphRect[50][4] = {
     {0, 2, 3, 1},
     {2, 1, 1, 4},
     {0, 0, 3, 5},
+    {0, 0, 3, 1},
+    {1, 0, 1, 5},
     {0, 0, 1, 5},
-    {0, 1, 3, 2},
+    {0, 2, 3, 1},
     {2, 0, 1, 5},
 };
 
 /* black cut-outs, drawn after every white rectangle */
-static const u8 kHoleOfs[GLYPH_COUNT + 1] = {0, 1, 1, 3, 3, 3, 5, 7, 7, 9, 11, 11, 11, 11, 11, 11, 11, 11, 13, 13, 13, 14, 14};
+static const u8 kHoleOfs[GLYPH_COUNT + 1] = {0, 1, 1, 3, 3, 3, 5, 7, 7, 9, 11, 11, 11, 11, 11, 11, 11, 11, 13, 13, 13, 14, 14, 14};
 
 static const u8 kHoleRect[14][4] = {
     {1, 1, 1, 3},

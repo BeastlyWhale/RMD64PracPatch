@@ -112,12 +112,12 @@ static u32 *holes_sc(u32 *p, int x, int y, const u8 *g, int n, int sc)
 #define LIGHT_X2 (CLOCK_X - 7)
 #define LIGHT_Y2 (CLOCK_Y + ROW_H - 2)
 
-/* "PRAC ROM" watermark location shown on title and result sreen */
-#define N_MARK   8
+/* "PRAC PATCH" watermark location shown on title and result sreen */
+#define N_MARK   10
 #define MARK_X   (HUD_RIGHT - (N_MARK * 4 - 1))
 #define MARK_Y   222
 static const u8 kMark[N_MARK] = {
-    GL_P, GL_R, GL_A, GL_C, GL_SPACE, GL_R, 0 /* O */, GL_M
+    GL_P, GL_R, GL_A, GL_C, GL_SPACE, GL_P, GL_A, GL_T, GL_C, GL_H
 };
 #define COORD_X  (HUD_RIGHT - TEXT_W(N_COORD))
 

@@ -22,6 +22,12 @@ BOOT_RAM    = 0x800A62C0
 BOOT_ROM    = 0x000816C0          # 16-byte-aligned start of the zero hole
 BOOT_MAX    = 0x42C
 
+# The segment IPL3 loads, for --disasm. Not to be confused with BOOT_ROM/BOOT_RAM
+# above, which point at the zero hole *inside* it where the boot stub goes.
+SEG_ROM = 0x001000                # first byte IPL3 copies
+SEG_END = 0x101000                # one past the last (1 MB)
+SEG_RAM = 0x80025C00              # where it lands in KSEG0
+
 # EverDrive-64 X-series developer override
 MAGIC_VALUE  = 0x524D4450      # 'RMDP', must match src/rmd64.h
 
@@ -115,6 +121,9 @@ def main():
                     help='clock only (default). --minimal 0 --cap 1 adds the '
                          'position readout and input display')
     ap.add_argument('--out', default=None)
+    ap.add_argument('--disasm', action='store_true',
+                    help='disassemble the boot segment to build/boot.asm for '
+                         'the analysis tools, then exit without building')
     args = ap.parse_args()
     stage, ed64 = args.stage, args.ed64
 
@@ -123,6 +132,24 @@ def main():
     md5 = hashlib.md5(base).hexdigest()
     if md5 != BASE_MD5:
         sys.exit('baserom.z64 md5 is %s, expected %s' % (md5, BASE_MD5))
+
+    if args.disasm:
+        seg = base[SEG_ROM:SEG_END]
+        binp = os.path.join(BUILD, 'bootseg.bin')
+        asmp = os.path.join(BUILD, 'boot.asm')
+        open(binp, 'wb').write(seg)
+        cmd = [CROSS + 'objdump', '-D', '-b', 'binary', '-m', 'mips:4300',
+               '-EB', '--adjust-vma=0x%08X' % SEG_RAM, binp]
+        # not run(): objdump emits 9 MB here, so it goes straight to the file
+        with open(asmp, 'w') as f:
+            r = subprocess.run(cmd, stdout=f, stderr=subprocess.PIPE, text=True)
+        if r.returncode:
+            sys.exit(' '.join(cmd) + '\n' + r.stderr)
+        print('segment     ROM 0x%06X-0x%06X -> RAM 0x%08X, %d insns'
+              % (SEG_ROM, SEG_END, SEG_RAM, len(seg) // 4))
+        print('disassembly %s (%.1f MB)'
+              % (asmp, os.path.getsize(asmp) / 1048576.0))
+        return
 
     # font tables are generated, not hand-maintained
     run([sys.executable, os.path.join(ROOT, 'tools', 'genfont.py')])
