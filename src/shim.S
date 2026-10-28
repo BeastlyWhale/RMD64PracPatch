@@ -359,7 +359,19 @@ dma_wait:
      addiu  $t2, $t2, -1
     bnez    $t2, 6b
      nop
-7:  jr      $ra
+
+    /* SI: no controller read or rumble-pak write in flight. The SI writes
+     * RDRAM too (PIF RAM 0x801B4AD0, pads 0x801C4808) and is the only bus
+     * the rest of this function misses. */
+7:  lui     $t0, 0xA480
+    li      $t2, 0x200000
+8:  lw      $t1, 0x18($t0)
+    andi    $t1, $t1, 3                 /* DMA_BUSY | IO_READ_BUSY */
+    beqz    $t1, 9f
+     addiu  $t2, $t2, -1
+    bnez    $t2, 8b
+     nop
+9:  jr      $ra
      nop
 
 /* quiet_check: v0 = 1 when no thread is parked on an event that has already happened, so RDRAM can be snapshotted or put back consistently. Run with interrupts masked, Clobbers $t0-$t2. */
@@ -392,6 +404,14 @@ quiet_check:
     andi    $t1, $t1, 3
     bnez    $t1, 1f
      li     $v0, 6
+    /* SI: a controller read or rumble-pak write is pending. Nothing above
+     * covers it, and restoring mid-transaction tears the SI's queues -
+     * controller input then freezes until something enqueues a new job. */
+    li      $t0, SI_STATUS_REG
+    lw      $t1, 0($t0)
+    andi    $t1, $t1, 3
+    bnez    $t1, 1f
+     li     $v0, 7
     move    $v0, $zero
 1:  jr      $ra
      nop

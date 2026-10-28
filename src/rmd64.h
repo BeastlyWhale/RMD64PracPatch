@@ -47,6 +47,7 @@
 #define Q_PI_CMDQ       0x801974E0  /* PI manager command queue, .mtqueue */
 #define Q_PI_MANAGER    0x801997A0  /* PI manager thread, parked means idle */
 #define PI_STATUS_REG   0xA4600010
+#define SI_STATUS_REG   0xA4800018  /* bits 0-1: DMA_BUSY | IO_READ_BUSY */
 
 /*address of the framebuffer*/
 #define VI_ORIGIN_REG   0xA4400004

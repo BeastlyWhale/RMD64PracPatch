@@ -189,10 +189,10 @@ static u32 *hud_pass(u32 *p, const struct hud *h, u32 cimg, u32 fbw)
                               h->light == 2 ? COL_AMBER : COL_GREEN);
         p = rect(p, LIGHT_X1, LIGHT_Y1, LIGHT_X2, LIGHT_Y2);
 
-        /* debug for red box:1 graphics task, 2 audio task queued, 3 audio task running, 4 audio thread parked, 5 PI manager, 6 PI busy */
+        /* debug for red box:1 graphics task, 2 audio task queued, 3 audio task running, 4 audio thread parked, 5 PI manager, 6 PI busy, 7 SI busy */
         if (h->light == 3) {
             int i;
-            for (i = 0; i < h->qfail && i < 6; i++)
+            for (i = 0; i < h->qfail && i < 7; i++)
                 p = rect(p, CLOCK_X - 17 - i * 4, CLOCK_Y + 3,
                          CLOCK_X - 15 - i * 4, CLOCK_Y + 6);
         }
