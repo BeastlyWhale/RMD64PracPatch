@@ -440,7 +440,9 @@ quiet_wait:
     .set gp=64
     .globl blockcopy
 blockcopy:
-1:  ld      $t0,  0($a0)
+1:  cache   0x0D,  0($a1)               /* Create Dirty Exclusive, D-cache */
+    cache   0x0D, 16($a1)
+    ld      $t0,  0($a0)
     ld      $t1,  8($a0)
     ld      $t2, 16($a0)
     ld      $t3, 24($a0)

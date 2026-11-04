@@ -191,6 +191,11 @@ def main():
 
     # `.set gp=64` for 64 bit copy
     dis = run([CROSS + 'objdump', '-d', '--disassemble=blockcopy', elf])
+    ops = [l.split('\t')[2].split()[0] for l in dis.splitlines()
+           if len(l.split('\t')) >= 3]
+    if ops[:2] != ['cache', 'cache']:
+        sys.exit('blockcopy does not open with the two Create Dirty Exclusive '
+                 'ops - the loop label has drifted below them: %s' % ops[:4])
     n_ld = sum(1 for l in dis.splitlines() if '\tld\t' in l)
     n_sd = sum(1 for l in dis.splitlines() if '\tsd\t' in l)
     if n_ld < 4 or n_sd < 4:
